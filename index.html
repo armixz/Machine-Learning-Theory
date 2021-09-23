@@ -2,352 +2,250 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="author" content="iveseenthedark" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#333333" />
-
-    <title>A S C I I C A M</title>
+    <title>game of life</title>
     <style>
-      #ascii-cam pre,
-      body,
       html {
-        width: 100vw;
-        height: 100vh;
-        margin: 0;
+	  margin: auto;
+	  width: 80%;
       }
-      * {
-        box-sizing: border-box;
+
+      #game {
+	  padding-left: 0;
+	  padding-right: 0;
+	  margin-left: auto;
+	  margin-right: auto;
+	  display: block;
+	  width: 600px;
       }
-      body {
-        overflow: hidden;
-        background-color: #000;
-        color: #eee;
-        font-family: monospace;
+
+      .controls {
+	  padding-left: 0;
+	  padding-right: 0;
+	  margin-left: auto;
+	  margin-right: auto;
+	  display: block;
       }
-      #logo,
-      #enable-cam-msg {
-        transform: translate(-50%, -50%);
-        position: absolute;
-        left: 50%;
-        top: 50%;
+
+      .controls button {
+	  color: #000000 !important;
+	  text-transform: uppercase;
+	  background: #ffffff;
+	  padding: 10px;
+	  border: 2px solid #000000 !important;
+	  display: inline-block;
+	  transition: all 0.3s ease 0s;
+	  cursor:pointer;
       }
-      .fade {
-        transition: opacity 0.25s ease-in-out;
-      }
-      #logo {
-        line-height: 1.5;
-      }
-      #ascii-cam {
-        opacity: 0;
-      }
-      #ascii-cam pre {
-        position: absolute;
-        top: 0;
-        left: 0;
-        overflow: hidden;
-        line-height: 0.6;
-        user-select: none;
-        mix-blend-mode: screen;
-        font-size: 1.2em;
-        font-size: 2vh;
-      }
-      @media (max-height: 50em) {
-        #ascii-cam pre {
-          font-size: 1em;
-        }
-      }
-      @media (min-height: 60em) {
-        #ascii-cam pre {
-          font-size: 1.2em;
-        }
-      }
-      #ascii-cam #r-output {
-        color: red;
-      }
-      #ascii-cam #g-output {
-        color: #0f0;
-      }
-      #ascii-cam #b-output {
-        color: #00f;
-      }
-      #enable-cam-msg {
-        opacity: 0;
-        font-size: 3rem;
-        background-color: white;
-        color: black;
-        margin: 0;
-        max-width: 50vw;
-        white-space: pre-line;
-        text-align: center;
-        font-weight: 900;
-      }
-      #canvas,
-      #video {
-        display: none;
+
+      .controls button:active {
+	  box-shadow: 0 5px #0000;
+	  transform: translateY(2px);
       }
     </style>
   </head>
-
   <body>
-    <pre id="logo" class="fade">
-   _
-   _n_|_|_,_
-  |===.-.===|
-  |  ((_))  |
-  '==='-'==='
-A S C I I C A M
-    </pre>
-
-    <pre id="enable-cam-msg" class="fade">Allow access to camera to use</pre>
-
-    <div id="ascii-cam" class="fade">
-      <div class="layers">
-        <pre id="r-output"></pre>
-        <pre id="g-output"></pre>
-        <pre id="b-output"></pre>
+    <h1 class="header">Game of Life</h1>
+    <hr>
+    <div class="board">
+      <canvas id="game">
+      </canvas>
+      <hr>
+      <div class="controls">
+        <button id="start">Start</button>
+        <button id="stop">Stop</button>
+        <button id="clear">Clear the board</button> 
       </div>
     </div>
+    <p class="tips">
+      The Game of Life, also known simply as Life, is a cellular
+      automaton devised by the British mathematician John Horton
+      Conway in 1970.
 
-    <video id="video" autoplay="true"></video>
-    <canvas id="canvas" width="640" height="480"></canvas>
-    <script type="application/javascript">
-      (() => {
-        'use strict';
+      <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">Learn more here!</a>
+      <ul>
+        <li>Black squared represent alive cells, while white ones are dead. </li>
+        <li>Click on a square to toggle it alive.</li>
+        <li>Push the start button to start the simulation.</li>
+        <li>See life unfold in front of you.</li>
+        <li>Stop whenever you feel like it.</li>
+      </ul>
+    </p>
+    <script>
+      const canvas = document.getElementById("game");
+      const context = canvas.getContext("2d");
+      canvas.width = 600;
+      canvas.height = 600;
 
-        let interval;
-        let r_layer, g_layer, b_layer;
-        const palette = [' ', '.', '-', ':', '+', '*', '=', '%', '@', '#'];
-        const vanity = 'B Y  I V E S E E N T H E D A R K';
+      const bw = canvas.width;
+      const bh = canvas.height;
+      const p = 0;
+      let board = [];
 
-        /**
-         * @param {*} stream
-         */
-        const handle_video = stream => {
-          const canvas = document.getElementById('canvas');
-          const ctx = canvas.getContext('2d');
+      const start_button = document.getElementById("start");
+      const stop_button = document.getElementById("stop");
+      const clear_button = document.getElementById("clear");
 
-          const video = document.getElementById('video');
-          // Older browsers may not have srcObject
-          if ('srcObject' in video) {
-            video.srcObject = stream;
-          } else {
-            // Avoid using this in new browsers, as it is going away.
-            video.src = window.URL.createObjectURL(stream);
-          }
-          video.addEventListener('loadedmetadata', () => {
-            window.addEventListener('resize', () => set_canvas_dimensions(video, canvas, ctx));
-            set_canvas_dimensions(video, canvas, ctx);
+      let interval;
 
-            // Hide Logo
-            play_video(video, canvas, ctx);
-            setTimeout(() => {
-              document.getElementById('logo').style.opacity = 0;
-              document.getElementById('ascii-cam').style.opacity = 1;
-            }, 1000);
-          });
-        };
+      // game
+      // cell is an object like {x: 10, y:40} where x,y its left and
+      // top coordinates 
+      function neighbors(cell){
+	  let neighbors = [];
+	  for (x=-10; x<= 10; x+=10) {
+	      for (y=-10; y<=10; y+=10) {
+		  if (!(x == 0 && y == 0)) {
+		      neighbors.push({x: cell.x + x, y: cell.y + y});
+		  }
+	      }
+	  }
+	  return neighbors;
+      }
 
-        /**
-         */
-        const handle_no_video = () => {
-          setTimeout(() => {
-            document.getElementById('logo').style.opacity = 0;
-            document.getElementById('ascii-cam').style.opacity = 1;
-            document.getElementById('enable-cam-msg').style.opacity = 1;
-            play_random();
-          }, 1000);
-        };
+      // given a cell's current status and number of neighbors return a
+      // boolean value of dead or alive
+      function cellStep(n, alive){
+	  if(alive){
+	      return (n == 2 || n == 3);
+	  } else {
+	      return n == 3;
+	  }
+      }
 
-        /**
-         * @param {*} e
-         */
-        const handle_error = e => {
-          console.error('Error', e);
-          handle_no_video();
-        };
+      // given a generation array return an array of all the neighbors of
+      // the alive cells
+      function allNeighbors(gen){
+	  len = gen.length;
+	  let all_neighbors = [];
+	  for (i=0; i<len; i++) {
+	      all_neighbors = all_neighbors.concat(neighbors(gen[i]));
+	  }
+	  return all_neighbors;
+      }
 
-        /**
-         * The greyscale value is calculated GREY = 0.299 * RED + 0.587 * GREEN + 0.114 * BLUE
-         * For more information see http://en.wikipedia.org/wiki/Grayscale
-         * @param {Array} image_data
-         */
-        const fade_to_grey = pixels => pixels.map(pixel => pixel[0] * 0.299 + pixel[1] * 0.587 + pixel[2] * 0.114);
+      function countOccurences(n){
+	  len = n.length;
+	  let occurences = [];
+	  for (i=0; i<len; i++){
+	      if(occurences.some(occ => (occ.x === n[i].x && occ.y === n[i].y))){
+		  occurences.find(occ => (occ.x === n[i].x
+					  && occ.y === n[i].y)).count += 1;
+	      } else {
+		  occurences.push({x: n[i].x, y: n[i].y, count: 1});
+	      }
+	  }
+	  return occurences;
+      }
 
-        /**
-         */
-        const play_video = (video, canvas, ctx) => {
-          clearInterval(interval);
+      function isAlive(cell, gen){
+	  return gen.some(c => c.x == cell.x && c.y == cell.y);
+      }
 
-          // Buffer reverse
-          ctx.drawImage(video, 0, 0, canvas.width * -1, canvas.height);
+      function removeCount(occ){
+	  const len = occ.length;
+	  let gen = [];
+	  for(let i = 0; i<len; i++){
+	      gen[i] = {x: occ[i].x, y:occ[i].y};
+	  }
+	  return gen;
+      }
 
-          // Grab view
-          const dx = canvas.dataset.hoffset || 0;
-          const dy = canvas.dataset.voffset || 0;
-          const image_width = canvas.width - dx * 2;
-          const image_data = ctx.getImageData(dx, dy, image_width, canvas.height - dy * 2).data;
+      function nextGeneration(gen){
+	  const neighbors = allNeighbors(gen);
+	  const active = countOccurences(neighbors);
+          
+	  return removeCount(active.filter(cell =>
+					   cellStep(cell.count, isAlive(cell, gen))));
+      }
 
-          // Chunk
-          const channels = 4;
-          const pixels = Array.from(Array(Math.ceil(image_data.length / channels)), (_, i) =>
-            image_data.slice(i * channels, i * channels + channels)
-          );
+      // middleware
+      // given the x,y coordinates on the canvas return the appropriate
+      // coordinates for the square ie the coordinate of the top left pixel
+      function chooseSquare(x,y){
+	  square = {left: x - x % 10,
+		    top: y - y % 10};
+	  return square;
+      }
 
-          // Draw
-          let r_output = '';
-          let g_output = '';
-          let b_output = '';
-          pixels.forEach((pixel, i) => {
-            // Break for new line
-            if (i && i % image_width === 0) {
-              r_output += '\n';
-              g_output += '\n';
-              b_output += '\n';
-            }
+      // UI
+      function drawBoard(){
+	  for (let x = 0; x <= bw; x += 10) {
+              context.moveTo(x + p, p);
+              context.lineTo(x + p, bh + p);
+	  }
 
-            const b_idx = Math.floor((pixel[2] / 255.0) * (palette.length - 1));
-            const r_idx = Math.floor((pixel[0] / 255.0) * (palette.length - 1));
-            const g_idx = Math.floor((pixel[1] / 255.0) * (palette.length - 1));
+	  for (let x = 0; x <= bh; x += 10) {
+              context.moveTo(p, x + p);
+              context.lineTo(bw + p, x + p);
+	  }
+	  context.strokeStyle = "#000000";
+	  context.stroke();
+      }
 
-            if (i && i >= image_width - vanity.length && i < image_width) {
-              // Input vanity message
-              r_output += vanity[vanity.length + i - image_width];
-              g_output += vanity[vanity.length + i - image_width];
-              b_output += palette[g_idx];
-            } else {
-              // Output camera data
-              r_output += palette[r_idx];
-              g_output += palette[g_idx];
-              b_output += palette[b_idx];
-            }
-          }, this);
+      //given a generation array fill the appropriate squares in canvas
+      function drawGeneration(gen){
+	  context.fillStyle = "#FFFFFF";
+	  context.fillRect(0,0,600,600);
+	  drawBoard();
+	  if(gen.length > 0){
+	      const len = gen.length;
+	      context.fillStyle = "#000000";
+	      for(let i=0;i<len;i++){
+		  context.fillRect(gen[i].x, gen[i].y, 10, 10);
+	      }
+	  }else{
+	      context.fillStyle = "#000000";
+	  }
+      }
 
-          r_layer.textContent = r_output;
-          g_layer.textContent = g_output;
-          b_layer.textContent = b_output;
+      // game loop
+      drawBoard();
+      drawBoard();
 
-          interval = setInterval(() => play_video(video, canvas, ctx), 33);
-        };
+      canvas.addEventListener('mousedown', event => {
+	  let rect = canvas.getBoundingClientRect();
+	  const x = event.clientX - rect.left;
+	  const y = event.clientY - rect.top;
+	  const square = chooseSquare(x,y);
+	  const cell = board.find(c => c.x == square.left && c.y == square.top);
+	  if(cell != undefined){
+	      let i = board.indexOf(cell);
+	      board.splice(i, 1);
+	      context.fillStyle = "#FFFFFF";
+	      context.fillRect(square.left, square.top, 10, 10);
+	      context.fillStyle = "#000000";
+	      drawBoard();
+	  } else{
+	      board.push({x: square.left, y: square.top});
+	      context.fillRect(square.left, square.top, 10, 10);
+	  }
+      });
 
-        /**
-         */
-        const play_random = () => {
-          clearInterval(interval);
+      start_button.onclick =  () => {
+	  start_button.style.cssText = "background-color:grey;cursor:not-allowed;";
+	  start_button.innerHTML = "Running!";
+	  if (!interval) {
+	      interval = setInterval(() => {
+		  board = nextGeneration(board);
+		  drawGeneration(board);
+	      }, 300);
+	  }
+      };
 
-          const char_dims = get_character_dimensions();
-          const screen_dims = get_screen_dimensions(char_dims);
-          const total_chars = Math.floor(screen_dims.char_width * screen_dims.char_height);
+      stop_button.onclick = () => {
+	  clearInterval(interval);
+	  interval = null;
+	  start_button.style.cssText = "background-color:white;";
+	  start_button.innerHTML = "Start";
+      };
 
-          const mid_x = Math.floor(screen_dims.char_width / 2);
-          const mid_y = Math.floor(screen_dims.char_height / 2);
+      clear_button.onclick = () => {
+	  board = [];
+	  drawGeneration(board);
+      };
 
-          let radius_sq = mid_x * mid_x + mid_y + mid_y;
-          radius_sq = radius_sq < 2500 ? 2500 : radius_sq; // Stop the circle getting too small
 
-          let r_output = '',
-            g_output = '',
-            b_output = '';
-          for (let i = 0; i < total_chars; i++) {
-            // Break for new line
-            if (i && i % screen_dims.char_width === 0) {
-              r_output += '\n';
-              g_output += '\n';
-              b_output += '\n';
-            }
-
-            const char_pos_x = i % screen_dims.char_width;
-            const char_pos_y = i / screen_dims.char_width;
-
-            let dist = (char_pos_x - mid_x) * (char_pos_x - mid_x) + (char_pos_y - mid_y) * (char_pos_y - mid_y);
-            dist = dist > radius_sq ? radius_sq : dist; // Distance can be further than radius, clamp
-
-            const range = Math.floor(palette.length * (1 - dist / radius_sq));
-            const r_idx = Math.floor(Math.random() * range);
-            const g_idx = Math.floor(Math.random() * range);
-            const b_idx = Math.floor(Math.random() * range);
-
-            r_output += palette[r_idx];
-            g_output += palette[g_idx];
-            b_output += palette[b_idx];
-          }
-
-          r_layer.textContent = r_output;
-          g_layer.textContent = g_output;
-          b_layer.textContent = b_output;
-
-          interval = setInterval(play_random, 100);
-        };
-
-        /**
-         */
-        const get_character_dimensions = () => {
-          const span = document.createElement('span');
-          span.textContent = 'X';
-          span.style.position = 'absolute';
-          span.style.left = '-100px';
-
-          document.querySelector('#ascii-cam pre').appendChild(span);
-          const dimensions = span.getBoundingClientRect();
-          span.remove();
-
-          return dimensions;
-        };
-
-        /**
-         */
-        const get_screen_dimensions = char_dims => {
-          return {
-            width: window.innerWidth,
-            height: window.innerHeight,
-            char_width: Math.ceil(window.innerWidth / char_dims.width),
-            char_height: Math.ceil(window.innerHeight / char_dims.height)
-          };
-        };
-
-        /**
-         */
-        const set_canvas_dimensions = (video, canvas, ctx) => {
-          console.log('setting canvas dimensions');
-          const char_dims = get_character_dimensions();
-          const screen_dims = get_screen_dimensions(char_dims);
-
-          let width = Math.floor(screen_dims.width / char_dims.width);
-          let height = Math.max(width * 0.75, screen_dims.char_height);
-
-          if (height > screen_dims.char_height) {
-            canvas.dataset.voffset = Math.floor((height - screen_dims.char_height) / 2);
-            canvas.dataset.hoffset = 0;
-          } else {
-            width = (height / 3) * 4;
-            canvas.dataset.hoffset = Math.floor((width - screen_dims.char_width) / 2);
-            canvas.dataset.voffset = 0;
-          }
-
-          video.width = canvas.width = width;
-          video.height = canvas.height = height;
-
-          // Reset scale if context exists
-          ctx && ctx.scale(-1, 1);
-        };
-
-        // Onload
-        window.addEventListener('load', () => {
-          if (navigator && navigator.mediaDevices) {
-            // Grab layers
-            r_layer = document.getElementById('r-output');
-            g_layer = document.getElementById('g-output');
-            b_layer = document.getElementById('b-output');
-
-            const constraints = { audio: false, video: {} };
-            navigator.mediaDevices
-              .getUserMedia(constraints)
-              .then(handle_video)
-              .catch(handle_error);
-          } else {
-            handle_no_video();
-          }
-        });
-      })();
     </script>
   </body>
+  
 </html>
