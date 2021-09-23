@@ -56,25 +56,11 @@
         <button id="clear">Clear the board</button> 
       </div>
     </div>
-    <p class="tips">
-      The Game of Life, also known simply as Life, is a cellular
-      automaton devised by the British mathematician John Horton
-      Conway in 1970.
-
-      <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">Learn more here!</a>
-      <ul>
-        <li>Black squared represent alive cells, while white ones are dead. </li>
-        <li>Click on a square to toggle it alive.</li>
-        <li>Push the start button to start the simulation.</li>
-        <li>See life unfold in front of you.</li>
-        <li>Stop whenever you feel like it.</li>
-      </ul>
-    </p>
     <script>
       const canvas = document.getElementById("game");
       const context = canvas.getContext("2d");
-      canvas.width = 600;
-      canvas.height = 600;
+      canvas.width = 800;
+      canvas.height = 800;
 
       const bw = canvas.width;
       const bh = canvas.height;
