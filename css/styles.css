@@ -8,6 +8,10 @@
     text-align: center;
 }
 
+.txt {
+    text-align: end;
+}
+
 .column {
     float: left;
     width: 15%;
