@@ -4,12 +4,9 @@
     border-style: solid;
     border-width: 2px;
     width: fit-content;
-    height: max-content;
+    height: fit-content;
     text-align: center;
 }
-
-
-
 
 .txt {
     text-align: end;
