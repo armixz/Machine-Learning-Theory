@@ -2,13 +2,16 @@
 .square {
     color: rgb(0, 0, 0);
     border-style: solid;
-    display:flex;
-    flex-wrap:wrap;
-    border-width: 10px;
-    width: 200px;
+    /* display:flex; */
+    /* flex-wrap:wrap; */
+    border-width: 3px;
+    width: fit-content;
     height: 200px;
     text-align: center;
 }
+
+
+
 
 .txt {
     text-align: end;
