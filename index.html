@@ -1,148 +1,86 @@
+<!DOCTYPE html>
 <html>
+<title>ML Models</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
-<script src="js/lr-direct-many.js"></script>
-<link rel="stylesheet" href="css/styles.css">
+<style>
+    body,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: monospace
+    }
+</style>
 
-<div class="row">
-    <div class="column">
+<body class="w3-light-grey w3-content" style="max-width:800px">
 
-        <body>
-            <div class="square">
-                <h3>LR-Direct</h3>
-                <p>The Linear Regression script using the direct method, and hours as input and grades as response.</p>
-                <!-- <button type="button" onclick="window.location.href='https://colab.research.google.com/drive/1C7tX9PocvZwzUUzUvZCwdxJpJ92vx5tu?usp=sharing';">Google Colab</button> -->
-                <button type="button" onclick="window.open('https://colab.research.google.com/drive/1C7tX9PocvZwzUUzUvZCwdxJpJ92vx5tu?usp=sharing','_blank');">Google Colab</button>
+    <!-- !PAGE CONTENT! -->
+    <div class="w3-main" style="margin-left:50px">
+
+        <!-- Header -->
+        <header id="MLH">
+            <div class="w3-container">
+                <h2><b>CS 4375.501 | Machine Learning Models</b></h2>
+                <div class="w3-section w3-bottombar w3-padding-16"></div>
             </div>
-        </body>
-    </div>
-    <div class="column">
+        </header>
 
-        <body>
-            <div class="square">
-                <h3>LR-Direct-Polynomial</h3>
-                <p>The Linear Regression script using using the direct method and a polynomial model.</p>
-                <button type="button" onclick="window.open('https://colab.research.google.com/drive/1InYzuhF_QIv0FGRE4zf9TK8eGPV_nbZs?usp=sharing','_blank');">Google Colab</button>
+        <!-- First Photo Grid-->
+        <div class="w3-row-padding">
+            <div class="w3-third w3-container w3-margin-bottom">
+                <a href="https://colab.research.google.com/drive/1C7tX9PocvZwzUUzUvZCwdxJpJ92vx5tu?usp=sharing"><img src="png/LR-Direct.png" alt="Norway" style="width:100%" class="w3-hover-opacity"></a>
+                <div class="w3-container w3-white">
+                    <p><b>LR-Direct</b></p>
+                    <p>The Linear Regression script using the direct method, and hours as input and grades as response.</p>
+                </div>
             </div>
-        </body>
-    </div>
-    <div class="column">
-
-        <body>
-            <div class="square">
-                <h3>LR-Direct-Many</h3>
-                <p>The Linear Regression script using using the direct method and many feature-variables as input.</p>
-                <button type="button" onclick="window.open('https://colab.research.google.com/drive/1w5W1CfST6vIvxUUS4ftjcdDuZFW8BKuj?usp=sharing','_blank');">Google Colab</button>
+            <div class="w3-third w3-container w3-margin-bottom">
+                <a href="https://colab.research.google.com/drive/1InYzuhF_QIv0FGRE4zf9TK8eGPV_nbZs?usp=sharing"><img src="png/LR-Direct-Polynomial.png" alt="Norway" style="width:100%" class="w3-hover-opacity"></a>
+                <div class="w3-container w3-white">
+                    <p><b>LR-Direct-Polynomial</b></p>
+                    <p>The Linear Regression script using the direct method and a polynomial model.</p>
+                    
+                </div>
             </div>
-        </body>
-    </div>
-    <div class="column">
-
-        <body>
-            <div class="square">
-                <h3>LR-SGD</h3>
-                <p>The Linear Regression script using Stochastic Gradient Descent.</p>
-                <button type="button" onclick="window.open('https://colab.research.google.com/drive/18otNXG3a1oQbXsLkCkas3fhpxVB_Y05g?usp=sharing','_blank');">Google Colab</button>
+            <div class="w3-third w3-container">
+                <img src="z.png" alt="Norway" style="width:100%" class="w3-hover-opacity">
+                <div class="w3-container w3-white">
+                    <p><b></b></p>
+                    <p></p>
+                </div>
             </div>
-        </body>
-    </div>
-</div>
+        </div>
 
-<div class="row">
-    <div class="column">
-
-        <body>
-            <div class="square">
-                <h3>KMeans-Blobs</h3>
-                <p>The K-Means method applied on 2D Blob-points.</p>
-                <!-- <button type="button" onclick="window.location.href='https://colab.research.google.com/drive/1C7tX9PocvZwzUUzUvZCwdxJpJ92vx5tu?usp=sharing';">Google Colab</button> -->
-                <button type="button" onclick="window.open('https://colab.research.google.com/drive/1OLUuVouKzzG9yJv3jXglLDsMIEMws_Fk?usp=sharing','_blank');">Google Colab</button>
+        <!-- Second Photo Grid-->
+        <div class="w3-row-padding">
+            <div class="w3-third w3-container w3-margin-bottom">
+                <img src="/w3images/p1.jpg" alt="Norway" style="width:100%" class="w3-hover-opacity">
+                <div class="w3-container w3-white">
+                    <p><b></b></p>
+                    <p></p>
+                </div>
             </div>
-        </body>
-    </div>
-    <div class="column">
-
-        <body>
-            <div class="square">
-                <h3>KMeans-Moons</h3>
-                <p>The K-Means method applied on 2D Moon-points.</p>
-                <button type="button" onclick="window.open('https://colab.research.google.com/drive/1g0zPfljt3Dvd1T0ivTf931y_Uu6y2m6e?usp=sharing','_blank');">Google Colab</button>
+            <div class="w3-third w3-container w3-margin-bottom">
+                <img src="/w3images/p2.jpg" alt="Norway" style="width:100%" class="w3-hover-opacity">
+                <div class="w3-container w3-white">
+                    <p><b></b></p>
+                    <p></p>
+                </div>
             </div>
-        </body>
-    </div>
-    <div class="column">
-
-        <body>
-            <div class="square">
-                <h3>Gaussian-3D</h3>
-                <p>The plot of Gaussian densities: 3D and level sets.</p>
-                <button type="button" onclick="window.open('https://colab.research.google.com/drive/1XkhHEHZ_P0HjWWUDhBzt77s0MWUoiQ_L?usp=sharing','_blank');">Google Colab</button>
+            <div class="w3-third w3-container">
+                <img src="/w3images/p3.jpg" alt="Norway" style="width:100%" class="w3-hover-opacity">
+                <div class="w3-container w3-white">
+                    <p><b></b></p>
+                    <p></p>
+                </div>
             </div>
-        </body>
-    </div>
-    <div class="column">
+        </div>
 
-        <body>
-            <div class="square">
-                <h3>Gaussian-Sampling</h3>
-                <p>Sampling from a Gaussian density.</p>
-                <button type="button" onclick="window.open('https://colab.research.google.com/drive/120HAVD8KqrM603fZ4lMEUYRv3F5X0IR4?usp=sharing','_blank');">Google Colab</button>
-            </div>
-        </body>
-    </div>
-</div>
+</body>
 
-<div class="row">
-    <div class="column">
-
-        <body>
-            <div class="square">
-                <h3>PCA-2D</h3>
-                <p>Example of PCA on 2D points.</p>
-                <!-- <button type="button" onclick="window.location.href='https://colab.research.google.com/drive/1C7tX9PocvZwzUUzUvZCwdxJpJ92vx5tu?usp=sharing';">Google Colab</button> -->
-                <button type="button" onclick="window.open('https://colab.research.google.com/drive/1kLCvs2ggA3n_RkoCM0n_zQAv3CxvzpYA?usp=sharing','_blank');">Google Colab</button>
-            </div>
-        </body>
-    </div>
-    <div class="column">
-
-        <body>
-            <div class="square">
-                <h3>PCA-Reduction</h3>
-                <p>Dimensionality reduction applied on 2D points, from 2D to 1D.</p>
-                <button type="button" onclick="window.open('https://colab.research.google.com/drive/1RlnqlLu9CflTFVCpxJxAoLBftEe8ZTGf?usp=sharing','_blank');">Google Colab</button>
-            </div>
-        </body>
-    </div>
-    <div class="column">
-
-        <body>
-            <div class="square">
-                <h3>PCA-Noise</h3>
-                <p>Example of Noise reduction via PCA.</p>
-                <button type="button" onclick="window.open('https://colab.research.google.com/drive/12q4MiyC0df_jNUj_LY-xNING7cizX6eP?usp=sharing','_blank');">Google Colab</button>
-            </div>
-        </body>
-    </div>
-    <div class="column">
-
-        <body>
-            <div class="square">
-                <h3>PCA-Handwriting</h3>
-                <p>Example of dimensionality reduction on the dataset ’Handwriting’. </p>
-                <button type="button" onclick="window.open('https://colab.research.google.com/drive/1LGFuYRkoiuSsmzeG93tGMihS5mTgeaOF?usp=sharing','_blank');">Google Colab</button>
-            </div>
-        </body>
-    </div>
-    <div class="column">
-
-        <body>
-            <div class="square">
-                <h3>PCA-Eigenfaces </h3>
-                <p>Showing eigenfaces via Python and PCA. </p>
-                <button type="button" onclick="window.open('https://colab.research.google.com/drive/1NdRHA1FSPjH4nLFN0Mimpp4TMrC3A6sY?usp=sharing','_blank');">Google Colab</button>
-            </div>
-        </body>
-    </div>
-</div>
-    
 </html>
