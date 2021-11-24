@@ -2,11 +2,9 @@
 .square {
     color: rgb(0, 0, 0);
     border-style: solid;
-    /* display:flex; */
-    /* flex-wrap:wrap; */
-    border-width: 3px;
+    border-width: 2px;
     width: fit-content;
-    height: 200px;
+    height: max-content;
     text-align: center;
 }
 
