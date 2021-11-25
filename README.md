@@ -3,32 +3,33 @@
 - machine learning algorithms and models that constitute typical machine learning systems. 
 - background to conduct research in machine learning and apply state-of-the-art learning algorithms.
 
-https://armixz.github.io/just4fun/
+## [Github Host Link](https://armixz.github.io/just4fun/)
+
 
 ---
 
-- Models
-  - LR-Direct
-  - LR-Direct-Polynomial
-  - LR-Direct-Many
-  - LR-SGD
-  - KMeans-Blobs
-  - KMeans-Moons
-  - Gaussian-3D
-  - Gaussian-Sampling
-  - PCA-2D
-  - PCA-Reduction
-  - PCA-Noise
-  - PCA-Handwriting
-  - PCA-Eigenfaces
-  - KNN-Iris
-  - KNN-Iris-K
-  - KNN-MNIST
-  - Image-Handling
-  - LogisticR-Simple
-  - LogisticR-Exploratory
-  - DTree-Classification
-  - DTree-Regression
+- <b>Models</b>
+  - <i>LR-Direct</i>
+  - <i>LR-Direct-Polynomial</i>
+  - <i>LR-Direct-Many</i>
+  - <i>LR-SGD</i>
+  - <i>KMeans-Blobs</i>
+  - <i>KMeans-Moons</i>
+  - <i>Gaussian-3D</i>
+  - <i>Gaussian-Sampling</i>
+  - <i>PCA-2D</i>
+  - <i>PCA-Reduction</i>
+  - <i>PCA-Noise</i>
+  - <i>PCA-Handwriting</i>
+  - <i>PCA-Eigenfaces</i>
+  - <i>KNN-Iris</i>
+  - <i>KNN-Iris-K</i>
+  - <i>KNN-MNIST</i>
+  - <i>Image-Handling</i>
+  - <i>LogisticR-Simple</i>
+  - <i>LogisticR-Exploratory</i>
+  - <i>DTree-Classification</i>
+  - <i>DTree-Regression</i>
 
 ---
 
