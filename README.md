@@ -3,7 +3,7 @@
 - machine learning algorithms and models that constitute typical machine learning systems. 
 - background to conduct research in machine learning and apply state-of-the-art learning algorithms.
 
-## [Github Host Link](https://armixz.github.io/machine-learning-theory/)
+## [Github Host Link](https://armixz.github.io/Machine-Learning-Theory/)
 
 ![screen-gif](png/neural-mlblog.gif)
 
